@@ -1,0 +1,22 @@
+<!--pages/tabOne/tabOne.wxml-->
+<view class='bodyTabOne' wx:if='{{submitIf}}'>
+  <!-- {{submitHidden}} -->
+  <!-- <label>请输入要绑定的学号</label> -->
+  <!-- <input class='studentId' hidden='{{submitHidden}}' bindinput='register' type='number' placeholder='请输入学号'></input> -->
+  <van-input type='number' placeholder='请输入学号' bind:change='register' maxlength='10'></van-input>
+
+  <van-button type='primary' bind:click='sendRegisterData'>提交</van-button>
+</view>
+<view>
+  <!-- <button bindtap='sendRegisterData' style='margin-left:5%;margin-right:5%;margin-top:3%' hidden='{{submitHidden}}'>提交</button> -->
+  
+</view>
+
+<view class='textBody' wx:if='{{textBodyIf}}'>
+  <text style='color:red'>后续功能等待开发</text>
+</view>
+
+<view>
+  <van-toast id='van-toast' />
+  
+</view>

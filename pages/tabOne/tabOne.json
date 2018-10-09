@@ -1,0 +1,12 @@
+{
+  "usingComponents":
+  {
+   "van-input":"/dist/field/index",
+   "van-button":"/dist/button/index",
+   "van-toast":"/dist/toast/index",
+   "van-transition":"/dist/toast/index"
+  },
+
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
+}

@@ -1,12 +1,43 @@
 {
+  "usingComponents":{
+    "van-tabbar": "/dist/tabbar/index",
+    "van-tabbar-item": "/dist/tabbar-item/index"
+  },
+
   "pages":[
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/tabOne/tabOne",
+    "pages/tabTwo/tabTwo",
+    "pages/testPage/testPage"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
     "navigationBarTextStyle":"black"
+  },
+  "tabBar":{
+    "selectedColor":"#f00",
+    "list":[{
+    "pagePath": "pages/index/index",
+    "text": "Joker",
+    "iconPath": "pages/index/img/joker.png",
+    "selectedIconPath": "pages/index/img/joker.png" 
+    },
+    {
+    "pagePath": "pages/tabOne/tabOne",
+    "text": "暂定",
+    "iconPath": "pages/index/img/cart.png",
+    "selectedIconPath": "pages/index/img/cart.png"
+    },
+    {
+    "pagePath": "pages/tabTwo/tabTwo",
+    "text": "用户",
+    "iconPath": "pages/index/img/user.png",
+    "selectedIconPath": "pages/index/img/user.png"
+    }]
   }
+  
+
 }

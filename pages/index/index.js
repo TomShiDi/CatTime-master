@@ -1,15 +1,39 @@
 //index.js
+import Toast from '../../dist/toast/toast';
+import Dialog from '../../dist/dialog/dialog';
+
 //获取应用实例
 const app = getApp()
 
 Page({
   data: {
     motto: 'Hello World',
+    checked:false,
+    start_button_hidden:false,
+    end_button_hidden:true,
+    processStartFlag:'0',
+    differtCountText:'0',
+    countDownFlag:'0',
+    countDownStart:'',
+    checkbox:[],
+    focus_time:[],
+    unfocus_time:[],
+    position_x:'0',
+    position_y:'0',
+    position_z:'0',
     timer:'',
+    count:'0',
+    differ:'0',
     second:'0',
-    minute:'',
-    hour:'',
+    minute:'0',
+    hour:'0',
+    differtCount:'0',
     userInfo: {},
+    openid:'',
+    studentId:'',
+    AppID:'wx5de4ceda37f4c8fc',
+    AppSecret:'07084bdc64de67946f8b2bbb56a0c8e6',
+    code:'',
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
@@ -19,8 +43,18 @@ Page({
       url: '../logs/logs'
     })
   },
+
   onLoad: function () {
+    var flag = 1;
+    var startTime = 0;
+    var endTime = 0;
+    var isValidFlag = 1;
+    var maxWaitTime = 20;
+
+    this.getUserOpenid();
+
     if (app.globalData.userInfo) {
+      
       this.setData({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
@@ -46,7 +80,75 @@ Page({
         }
       })
     }
+    let that = this;
+    wx.onAccelerometerChange(function(res){
+      var processStartFlag = that.data.processStartFlag;
+      that.setData({
+        position_x:res.x,
+        position_y:res.y,
+        position_z:res.z
+      })
+
+      if(flag==0){
+        that.setData({
+          second: Math.floor((that.data.count - startTime) % 60),
+          minute: Math.floor((that.data.count - startTime) / 60)
+        });
+      }
+
+      
+
+      if (res.z>=0.8&&flag == 1&&processStartFlag==1){
+        startTime = that.data.count;
+        wx.vibrateLong();
+        if(that.data.countDownFlag == 1)
+        {
+          var unfocus_time = that.data.unfocus_time;
+          var countDownDiffert = that.data.count - that.data.countDownStart;
+          unfocus_time.push(Math.floor((countDownDiffert) / 60) + "分" + Math.floor((countDownDiffert) % 60)+"秒");
+          that.setData({
+            unfocus_time:unfocus_time,
+            countDownFlag:0
+          });
+        }
+        that.setData({
+          second:Math.floor((that.data.count-startTime)%60),
+          minute: Math.floor((that.data.count - startTime) / 60)
+        });
+        flag = 0;
+      }else{
+        if(res.z<=0.5&&flag==0){
+          endTime = that.data.count;
+          if (isValidFlag ==1)
+          {
+            var focus_time=that.data.focus_time;
+            focus_time.push(Math.floor((endTime - startTime) / 60) + "分" + Math.floor((endTime - startTime) % 60) + "秒");
+            that.setData({
+              differtCount: that.data.differtCount + endTime - startTime,
+              differtCountText: Math.floor((that.data.differtCount + endTime - startTime) / 60) + "分" + Math.floor((that.data.differtCount + endTime - startTime) % 60) + "秒",
+              differ: endTime - startTime,
+              focus_time:focus_time,
+              second: Math.floor((endTime - startTime) % 60),
+              minute: Math.floor((endTime - startTime) / 60)
+            })
+  
+            console.log(focus_time);
+          }
+          startTime =0;
+          that.setData({
+            countDownFlag:'1',
+            countDownStart:that.data.count
+          });
+          flag = 1;
+        }
+      }
+    })
   },
+
+  onUnload:function(){
+    console.log("onUnload方法执行");
+  },
+
   getUserInfo: function(e) {
     console.log(e)
     app.globalData.userInfo = e.detail.userInfo
@@ -56,23 +158,188 @@ Page({
     })
   },
   
-  onShow:function(){
-    this.countDown();
-  },
+  // onShow:function(){
+  //   this.countDown();
+  // },
 
   countDown:function(){
-    let second = this.data.second
+    let that = this;
+    var count = that.data.count;
 
-    this.setData({
+    
+    that.setData({
       timer:setInterval(function(){
-        second--;
+        count++;
 
-        this.setData({
-          second:second
+        that.setData({
+          count:count
         })
-
+        
         // if ()
-      },1000)
+      },1000),
+      start_button_hidden:true,
+      end_button_hidden:false,
+      processStartFlag:1
     })
+  },
+
+  closeCountDown:function(){
+    let that = this;
+    let differtCount = that.data.differtCount;
+    that.setData({
+      end_button_hidden:true,
+      start_button_hidden:false,
+      processStartFlag:0,
+      differtCount:0,
+      differttCountText:'0'
+    });
+    // that.sendTimeData();
+    clearInterval(that.data.timer);
+  },
+
+  insert_focus: function () {
+    let that = this;
+    var focus_time = this.data.focus_time;
+
+    var differ = this.data.differ;
+    console.log(focus_time);
+
+    focus_time.push(Math.floor(differ/60) + "分"+ differ%60 + "秒");
+    that.setData({
+      focus_time: focus_time
+    })
+  },
+
+  insert_unfocus: function () {
+    var unfocus_time = this.data.unfocus_time;
+
+    var differ = this.data.differ;
+    console.log(unfocus_time);
+
+    unfocus_time.push(Math.floor(differ / 60) + "分" + differ % 60 + "秒");
+    this.setData({
+      unfocus_time: unfocus_time
+    })
+  },
+
+  onHide:function(e){
+    // this.closeCountDown();
+    // console.log("监听已关闭");
+  },
+
+
+  sendTimeData:function(){
+    var that = this;
+
+    var unfocus_time = that.data.unfocus_time;
+    var countDownDiffert = that.data.count - that.data.countDownStart;
+    unfocus_time.push(Math.floor((countDownDiffert) / 60) + "分" + Math.floor((countDownDiffert) % 60) + "秒");
+    that.setData({
+      unfocus_time: unfocus_time,
+      countDownFlag: 0
+    });
+
+    wx.request({
+      url: 'http://selltom.s1.natapp.cc/class/wechatSave',
+      method:'POST',
+      header:{
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      data: that.json2Form({openid:app.globalData.openid,
+                            sustainedTime:that.data.differtCountText,
+                            sustainedTimeSrc:that.data.differtCount}),
+      complete:function(res){
+        if(res==null||res.data==null){
+          console.log("网络请求错误")
+          return;
+        }else{
+          wx.showToast({
+            title: '成功',
+            icon:'succes',
+            duration: 1000,
+            mask: true
+          })
+          console.log(res.data);
+        }
+      }
+    })
+  },
+  json2Form:function(params){
+    var str = [];
+    for(var item in params){
+      console.log(this.data.userInfo);
+      str.push(encodeURIComponent(item) + "=" +encodeURIComponent(params[item]));
+    }
+    return str.join("&");
+  },
+
+  getUserOpenid:function(){
+    var that = this;
+
+    wx.login({
+      success:function(res){
+        console.log(res.code);
+
+        wx.request({
+          url: 'https://api.weixin.qq.com/sns/jscode2session?appid='+that.data.AppID+'&secret='+that.data.AppSecret+'&js_code=' + res.code +'&grant_type=authorization_code',
+          method: 'GET',
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          complete: function (res) {
+            if (res == null || res.data == null) {
+              console.log("获取openid失败");
+              return;
+            } else {
+              // console.log(res.data);
+              app.globalData.openid = res.data.openid;
+              wx.request({
+                url: 'http://selltom.s1.natapp.cc/connect/getStudentId',
+                method:'GET',
+                data:{'openid':app.globalData.openid},
+                
+                complete:function(res){
+                  if(res.statusCode!=200)
+                  {
+                    Toast.fail("当前账号未绑定学号");
+                    wx.switchTab({
+                      url:"/pages/tabOne/tabOne"
+                    });
+                    // Dialog.alert({
+                    //   title:"提示",
+                    //   message:"账号未绑定学号"
+                    // });
+                    
+                    console.log("获取学号失败");
+                    return;
+                  }else{
+                    app.globalData.studentId = res.data;
+                    console.log(app.globalData.studentId);
+                  }
+                }
+              });
+              console.log(app.globalData.openid);
+            }
+          }
+
+        })
+      }
+    })
+    
+  },
+
+  onChange({detail}){
+    console.log(detail)
+    this.setData({
+      checked:detail
+    });
+    if (detail){
+      this.countDown();
+    }
+    else{
+      this.closeCountDown();
+    }
+    
   }
+
 })

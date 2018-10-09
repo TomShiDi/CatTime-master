@@ -1,0 +1,30 @@
+/* pages/tabTwo/tabTwo.wxss */
+
+
+.tabTwoBody{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.userRecordSV{
+  width: 80%;
+  height: 600rpx;
+  white-space: nowrap;
+  /* background-color: rgba(197, 189, 189, 0.267); */
+  margin-top: 10rpx;
+  margin-left: 10%;
+}
+
+/* .userRecordItem{
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 255, 13, 0.459);
+  border-radius: 20rpx;
+  margin-top: 10rpx;
+  font-size: medium;
+  margin-left: 5%;
+} */

@@ -7,16 +7,55 @@
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
   </view>
-  <view class="usermotto">
+  <!-- <view class="usermotto">
     <text class="user-motto">{{motto}}</text>
+  </view> -->
+
+  <view class='view_sustainedTime'>
+    <text>总的专注时间: {{differtCountText}}\n</text>
+  </view>
+  <view class='clockBody'>
+    <view style='align-item:center'>
+      <text class='hour'>{{hour}}</text>时
+      <text class='minute'>{{minute}}</text>分
+      <text class='second'>{{second}}</text>秒
+    </view>
+    <view style='align-item:center'>
+      <van-switch checked='{{checked}}' bind:change='onChange' />
+    </view>
+  </view>
+  
+
+  <!-- <text class='is_focus'>专注时间</text>
+  <text class='not_focus'>走神时间</text> -->
+  <scroll-view class='scroll_view_t' scroll-y="true">
+    <view class='is_focus_view' wx:for="{{focus_time}}" wx:key="{{key}}">
+      <text class='is_focus_text'>本次专注时间{{item}}\n\n</text>
+      <text>\n</text>
+    </view>
+    <view class='not_focus_view' wx:for="{{unfocus_time}}" wx:key="{{key}}">
+      <text class='not_focus_text'>本次走神时间{{item}}</text>
+      <text>\n</text>
+    </view>
+  </scroll-view>
+  
+
+  <!-- <button bindtap='insert_focus'>增加专注记录</button>
+
+  <button bindtap='insert_unfocus'>增加走神记录</button> -->
+  <view class='view_button'>
+    <view>
+      <!-- <button hidden='{{end_button_hidden}}' bindtap='closeCountDown'>关闭计时</button>
+      <button hidden='{{start_button_hidden}}' bindtap='countDown'>开始计时</button> -->
+      
+    </view>
+    <view>
+      <button bindtap='sendTimeData'>保存数据</button>
+    </view>
   </view>
 
-  <!-- <view>
-    <button bindtap='onShow'>计时开始</button>
-  </view> -->
-  <view>
-    计时:
-    <text class='second'>{{second}}</text>
-    s
-  </view>
+  <van-toast id='van-toast'/>
+  
 </view>
+
+

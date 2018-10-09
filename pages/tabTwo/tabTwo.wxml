@@ -1,0 +1,27 @@
+<!--pages/tabTwo/tabTwo.wxml-->
+
+<view>
+  <view class='tabTwoBody'>
+    <!-- <button bindtap='getData' style='margin-left:5%;margin-right:5%;margin-top:3%'>测试</button> -->
+    <image src='/pages/index/img/bg_tarbarTwo.jpg' style='width:280rpx;height:500rpx'></image>
+  </view>
+
+  <scroll-view class='userRecordSV' scroll-y="true" scroll-x="true">
+    <view class="userRecordItem" wx:for="{{userRecord}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+      <van-cell 
+      title='{{item.createTime}}' 
+      value='{{item.sustainedTime}}' 
+      is-link icon='clock' 
+      link-type='navigateTo'
+      url='/pages/testPage/testPage?index={{index}}'
+      >
+      </van-cell>
+    </view>
+  </scroll-view>
+
+  <van-toast id='van-toast' />
+  <!-- <van-button>van-button</van-button> -->
+</view>
+
+
+

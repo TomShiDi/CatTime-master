@@ -1,1 +1,8 @@
-{}
+{
+
+  "usingComponents":{
+    "van-toast": "/dist/toast/index",
+    "van-transition":"/dist/transition/index",
+    "van-switch":"/dist/switch/index"
+  }
+}

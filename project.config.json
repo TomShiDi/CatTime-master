@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -12,8 +12,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.0.4",
-	"appid": "wx95ab164462d19cf2",
-	"projectname": "CountDown",
+	"appid": "wx5de4ceda37f4c8fc",
+	"projectname": "CountDown_2",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
