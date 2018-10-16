@@ -17,7 +17,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getData();
+    if (app.globalData.studentOrTeacherId != '') {
+      console.log((app.globalData.studentOrTeacherId).toString());
+      if (app.globalData.studentOrTeacherId.toString().length == 10) {
+        this.getPersonalData();
+      } else {
+        this.getData();
+      }
+    }
   },
 
   /**
@@ -52,7 +59,15 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    this.getData();
+    if (app.globalData.studentOrTeacherId != '') {
+      console.log((app.globalData.studentOrTeacherId).toString());
+      if (app.globalData.studentOrTeacherId.toString().length == 10) {
+        this.getPersonalData();
+      } else {
+        this.getData();
+      }
+    }
+
     Toast.loading({
       mark:true,
       message:"正在刷新"
@@ -74,17 +89,17 @@ Page({
 
   },
 
-  getData:function(){
+  getPersonalData:function(){
     var that = this;
-    console.log(app.globalData.studentId);
+    console.log(app.globalData.studentOrTeacherId);
     wx.request({
-      url: 'http://selltom.s1.natapp.cc/class/minWechatSearch',
+      url: 'https://selltom.mynatapp.cc/class/minWechatSearch',
       method:'POST',
       header: {
         "Content-Type": "application/x-www-form-urlencoded"
       },
 
-      data: "studentId="+app.globalData.studentId,
+      data: "studentId="+app.globalData.studentOrTeacherId,
 
       complete:function(res){
         if(res == null || res.data == null){
@@ -100,6 +115,34 @@ Page({
         }
       }
     })
+  },
+
+  getData:function(){
+    var that = this;
+    console.log(app.globalData.studentOrTeacherId);
+    wx.request({
+      url: 'https://selltom.mynatapp.cc/class/minSearchByTeacherId',
+      method: 'GET',
+      // header: {
+      //   "Content-Type": "application/x-www-form-urlencoded"
+      // },
+
+      data: {"teacherId":app.globalData.studentOrTeacherId},
+
+      complete: function (res) {
+        if (res == null || res.data == null) {
+          console.log("获取记录失败");
+          return;
+        } else {
+          that.setData({
+            userRecord: res.data
+          });
+          app.globalData.userRecord = res.data;
+          console.log(app.globalData.userRecord);
+          // console.log(res.data);
+        }
+      }
+    });
   },
 
 

@@ -3,18 +3,40 @@
   <!-- {{submitHidden}} -->
   <!-- <label>请输入要绑定的学号</label> -->
   <!-- <input class='studentId' hidden='{{submitHidden}}' bindinput='register' type='number' placeholder='请输入学号'></input> -->
-  <van-input type='number' placeholder='请输入学号' bind:change='register' maxlength='10'></van-input>
+  <van-input type='number' placeholder='请输入学号或教师号' bind:change='register' maxlength='10' use-button-slot>
+    <van-button slot='button' size='small' type='primary' bind:click='sendRegisterData'>提交</van-button>
+  </van-input>
 
-  <van-button type='primary' bind:click='sendRegisterData'>提交</van-button>
+  
 </view>
 <view>
   <!-- <button bindtap='sendRegisterData' style='margin-left:5%;margin-right:5%;margin-top:3%' hidden='{{submitHidden}}'>提交</button> -->
   
 </view>
-
-<view class='textBody' wx:if='{{textBodyIf}}'>
-  <text style='color:red'>后续功能等待开发</text>
+<view class='textBody' wx:if='{{studentTextBodyIf}}'>
+  <van-input type='text' readonly label='当前课程为:' value='{{launchInfo.courseName}}'></van-input>
 </view>
+<view class='textBody' wx:if='{{studentTextBodyIf}}'>
+  <!-- <text style='color:red'>后续功能等待开发</text> -->
+  <van-input type='number' placeholder='6位验证码'bind:change='setLaunchCode' maxlength='6' use-button-slot>
+    <van-button slot='button' size='small' type='primary' bind:click='getLaunchInfo'>进入房间</van-button>
+  </van-input>
+</view>
+
+<view class='textBody' wx:if='{{teacherTextBodyIf}}'>
+  
+  <van-input type='text' placeholder='课程名'bind:change='setCourseName' maxlength='20' use-button-slot>
+    <van-button slot='button' size='small' type='primary' bind:click='setLaunchInfo'>创建房间</van-button>
+  </van-input>
+</view>
+
+<view class='textBody' wx:if='{{teacherTextBodyIf}}'>
+  
+  <van-input type='text' label='房间号:' readonly value='{{launchCode}}' maxlength='6' use-button-slot>
+    
+  </van-input>
+</view>
+
 
 <view>
   <van-toast id='van-toast' />

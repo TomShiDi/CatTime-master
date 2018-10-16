@@ -1,10 +1,11 @@
 <!--pages/testPage/testPage.wxml-->
 <view>
-  <van-tabbar bind:change='onActive'>
+  <!-- <van-tabbar bind:change='onActive'>
     <van-tabbar-item icon='chat'>标签</van-tabbar-item>
     <van-tabbar-item icon='shop'>标签</van-tabbar-item>
     <van-tabbar-item icon='play'>标签</van-tabbar-item>
     <van-tabbar-item icon='passed'>标签</van-tabbar-item>
-  </van-tabbar>
+  </van-tabbar> -->
+  <van-input type='text' readonly value='时间: {{userRecordItem.createTime}}  课程:{{userRecordItem.courseName}}'></van-input>
   <van-toast id='van-toast' />
 </view>

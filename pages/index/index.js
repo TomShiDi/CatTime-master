@@ -30,7 +30,7 @@ Page({
     differtCount:'0',
     userInfo: {},
     openid:'',
-    studentId:'',
+    studentOrTeacherId:'',
     AppID:'wx5de4ceda37f4c8fc',
     AppSecret:'07084bdc64de67946f8b2bbb56a0c8e6',
     code:'',
@@ -240,14 +240,17 @@ Page({
     });
 
     wx.request({
-      url: 'http://selltom.s1.natapp.cc/class/wechatSave',
+      url: 'https://selltom.mynatapp.cc/class/wechatSave',
       method:'POST',
       header:{
         "Content-Type": "application/x-www-form-urlencoded"
       },
       data: that.json2Form({openid:app.globalData.openid,
                             sustainedTime:that.data.differtCountText,
-                            sustainedTimeSrc:that.data.differtCount}),
+                            sustainedTimeSrc:that.data.differtCount,
+                            courseName:app.globalData.launchInfo['courseName'],
+                            teacherId:app.globalData.launchInfo['teacherId']
+                            }),
       complete:function(res){
         if(res==null||res.data==null){
           console.log("网络请求错误")
@@ -281,8 +284,10 @@ Page({
         console.log(res.code);
 
         wx.request({
-          url: 'https://api.weixin.qq.com/sns/jscode2session?appid='+that.data.AppID+'&secret='+that.data.AppSecret+'&js_code=' + res.code +'&grant_type=authorization_code',
+          // url: 'https://api.weixin.qq.com/sns/jscode2session?appid='+that.data.AppID+'&secret='+that.data.AppSecret+'&js_code=' + res.code +'&grant_type=authorization_code',
+          url:'https://selltom.mynatapp.cc/wechat/getopenid',
           method: 'GET',
+          data:{'code':res.code},
           header: {
             "Content-Type": "application/x-www-form-urlencoded"
           },
@@ -294,7 +299,7 @@ Page({
               // console.log(res.data);
               app.globalData.openid = res.data.openid;
               wx.request({
-                url: 'http://selltom.s1.natapp.cc/connect/getStudentId',
+                url: 'https://selltom.mynatapp.cc/connect/getStudentId',
                 method:'GET',
                 data:{'openid':app.globalData.openid},
                 
@@ -313,8 +318,8 @@ Page({
                     console.log("获取学号失败");
                     return;
                   }else{
-                    app.globalData.studentId = res.data;
-                    console.log(app.globalData.studentId);
+                    app.globalData.studentOrTeacherId = res.data;
+                    console.log(app.globalData.studentOrTeacherId);
                   }
                 }
               });

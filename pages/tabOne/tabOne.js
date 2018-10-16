@@ -1,7 +1,7 @@
 // pages/tabOne/tabOne.js
 
 import Toast from '../../dist/toast/toast.js'
-const app = getApp()
+const app = getApp();
 
 Page({
 
@@ -9,11 +9,14 @@ Page({
    * 页面的初始数据
    */
   data: {
-    studentId:'',
-    submitHidden:false,
+    studentOrTeacherId:'',
     submitIf:true,
-    textBodyIf:false,
-    textBodyHidden:true
+    studentTextBodyIf:false,
+    teacherTextBodyIf:false,
+    textBodyHidden:true,
+    launchCode:'',
+    launchInfo:{},
+    courseName:''
 
   },
 
@@ -21,14 +24,27 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if(app.globalData.studentId != null){
-      console.log(app.globalData.studentId);
-      this.setData({
-        submitHidden: true,
-        textBodyHidden: false,
-        textBodyIf:true,
-        submitIf:false
-      });
+    // this.setData({
+    //   studentTextBodyIf:app.globalData.studentTextBodyIf
+    // });
+    
+    if(app.globalData.studentOrTeacherId != ''){
+      console.log((app.globalData.studentOrTeacherId).toString());
+      if (app.globalData.studentOrTeacherId.toString().length==10){
+        this.setData({
+          submitHidden: true,
+          textBodyHidden: false,
+          studentTextBodyIf: true,
+          submitIf: false
+        });
+
+      }else{
+        this.setData({
+          teacherTextBodyIf: true,
+          submitIf: false
+        });
+      }
+      
     }
   },
 
@@ -43,7 +59,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    // this.setData({
+    //   studentTextBodyIf:app.globalData.studentTextBodyIf
+    // })
   },
 
   /**
@@ -68,7 +86,7 @@ Page({
       mark:true,
       message:"功能等待开发"
     });
-    
+    wx.stopPullDownRefresh();
   },
 
   /**
@@ -88,7 +106,14 @@ Page({
 
   register: function (e) {
     this.setData({
-      studentId: e.detail
+      studentOrTeacherId: e.detail
+    });
+    console.log(e.detail);
+  },
+
+  setLaunchCode:function(e){
+    this.setData({
+      launchCode:e.detail
     });
     console.log(e.detail);
   },
@@ -97,17 +122,17 @@ Page({
   sendRegisterData: function () {
     var that = this;
     wx.request({
-      url: 'http://selltom.s1.natapp.cc/connect/minwechat',
+      url: 'https://selltom.mynatapp.cc/connect/minwechat',
       method: 'POST',
       header: {
         "Content-Type": "application/x-www-form-urlencoded"
       },
       data: that.json2Form({
         openid: getApp().globalData.openid,
-        studentId: that.data.studentId
+        studentId: that.data.studentOrTeacherId
         }),
       complete: function (res) {
-        if (res == null || res.data == null) {
+        if (res.statusCode!=200) {
           console.log("网络请求错误");
           return;
         } else {
@@ -117,13 +142,9 @@ Page({
             duration: 1000,
             mask: true
           });
-          that.getStudentId();
-          that.setData({
-            submitHidden:true,
-            textBodyHidden:false,
-            submitIf:false,
-            textBodyIf:true
-          });
+          // that.getStudentOrTeacherId();
+          app.globalData.studentOrTeacherId = that.data.studentOrTeacherId;
+          that.isTeacherOrStudent();
           // console.log(app.globalData.openid);
 
         }
@@ -140,9 +161,9 @@ Page({
     return str.join("&");
   },
 
-  getStudentId:function(){
+  getStudentOrTeacherId:function(){
     wx.request({
-      url: 'http://selltom.s1.natapp.cc/connect/getStudentId',
+      url: 'https://selltom.mynatapp.cc/connect/getStudentId',
       method: 'GET',
       data: { 'openid': app.globalData.openid },
 
@@ -160,10 +181,104 @@ Page({
           console.log("获取学号失败");
           return;
         } else {
-          app.globalData.studentId = res.data;
-          console.log(app.globalData.studentId);
+          app.globalData.studentOrTeacherId = res.data;
+          // Toast.success("返回参数"+res.data);
+          // console.log(app.globalData.studentOrTeacherId);
         }
       }
     });
+  },
+
+
+  getLaunchInfo:function(e){
+    var that=this;
+
+    wx.request({
+      url: 'https://selltom.mynatapp.cc/launch/getLaunchInfo',
+      method:'GET',
+      data:{'launchCode':that.data.launchCode},
+
+      complete:function(res){
+        if(res.statusCode!=200){
+          that.setData({
+            launchCode:''
+          });
+          Toast.fail("失败");
+          console.log(res.data);
+        }
+        else{
+          that.setData({
+            launchInfo:res.data,
+            // studentTextBodyIf:false
+          });
+          app.globalData.launchInfo = res.data;
+          Toast.success("成功进入房间");
+          // console.log(that.data.launchInfo);
+          console.log(app.globalData.launchInfo);
+        }
+      },
+
+      fail:function(res){
+        
+      }
+    })
+  },
+
+  setLaunchInfo:function(e){
+    var that = this;
+
+    wx.request({
+      url: 'https://selltom.mynatapp.cc/launch/start',
+      method:'POST',
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      data:{
+        "courseName":that.data.courseName,
+          "teacherId":app.globalData.studentOrTeacherId
+        },
+
+      complete:function(res){
+        if (res.statusCode == 200){
+          console.log(res.data);
+          that.setData({
+            launchCode:res.data
+          });
+          Toast.success("房间创建成功");
+        }
+        else{
+          Toast.fail(res.data);
+        }
+      }
+    })
+  },
+
+
+  setCourseName:function(e){
+    this.setData({
+      courseName:e.detail
+    });
+  },
+
+  isTeacherOrStudent:function(){
+    
+    console.log(app.globalData.studentOrTeacherId);
+    if (app.globalData.studentOrTeacherId != '') {
+      console.log((app.globalData.studentOrTeacherId).toString());
+      if (app.globalData.studentOrTeacherId.toString().length == 10) {
+        this.setData({
+          studentTextBodyIf: true,
+          submitIf: false
+        });
+
+      } else {
+        this.setData({
+          teacherTextBodyIf: true,
+          submitIf: false
+        });
+      }
+
+    }
   }
+
 })

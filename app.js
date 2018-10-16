@@ -36,7 +36,9 @@ App({
   globalData: {
     userInfo: null,
     openid:'',
-    studnetId:'',
+    studentOrTeacherId:'',
+    studentTextBodyIf:false,
+    launchInfo:{},
     userRecord:[]
   }
 })

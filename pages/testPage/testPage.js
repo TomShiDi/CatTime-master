@@ -8,6 +8,7 @@ Page({
    */
   data: {
     index:'',
+    recordItem:{},
     userRecordItem:{}
   },
 

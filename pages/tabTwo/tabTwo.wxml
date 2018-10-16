@@ -9,7 +9,7 @@
   <scroll-view class='userRecordSV' scroll-y="true" scroll-x="true">
     <view class="userRecordItem" wx:for="{{userRecord}}" wx:for-index="index" wx:for-item="item" wx:key="key">
       <van-cell 
-      title='{{item.createTime}}' 
+      title='{{item.studentId}}' 
       value='{{item.sustainedTime}}' 
       is-link icon='clock' 
       link-type='navigateTo'
