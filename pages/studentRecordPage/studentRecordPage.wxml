@@ -1,0 +1,16 @@
+<!--pages/studentRecordPage/studentRecordPage.wxml-->
+<view>
+  <scroll-view class='userRecordSV' scroll-y="true" scroll-x="true" >
+    <view class="userRecordItem" wx:for="{{studentRecords}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+      <van-cell 
+      title='{{item.studentId}}' 
+      value='{{item.sustainedTime}}' 
+      is-link icon='clock' 
+      link-type='navigateTo'
+      url='/pages/testPage/testPage?index={{index}}'
+      >
+      </van-cell>
+    </view>
+  </scroll-view>
+  <!-- <text>{{studentRecords[0].studentId}}</text> -->
+</view>

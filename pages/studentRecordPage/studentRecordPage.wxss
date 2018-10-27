@@ -1,0 +1,11 @@
+/* pages/studentRecordPage/studentRecordPage.wxss */
+
+
+.userRecordSV{
+  width: 80%;
+  height: 600rpx;
+  white-space: nowrap;
+  /* background-color: rgb(207, 192, 192); */
+  margin-top: 10rpx;
+  margin-left: 10%;
+}

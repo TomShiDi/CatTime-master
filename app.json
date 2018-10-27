@@ -9,7 +9,8 @@
     "pages/logs/logs",
     "pages/tabOne/tabOne",
     "pages/tabTwo/tabTwo",
-    "pages/testPage/testPage"
+    "pages/testPage/testPage",
+    "pages/studentRecordPage/studentRecordPage"
   ],
   "window":{
     "backgroundTextStyle":"light",

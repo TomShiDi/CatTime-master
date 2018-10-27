@@ -4,6 +4,7 @@
     "van-tabbar": "/dist/tabbar/index",
     "van-tabbar-item": "/dist/tabbar-item/index",
     "van-toast":"/dist/toast/index",
-    "van-input":"/dist/field/index"
+    "van-input":"/dist/field/index",
+    "van-tag": "/dist/tag/index"
   }
 }

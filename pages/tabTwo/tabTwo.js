@@ -10,7 +10,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    userRecord:[]
+    userRecord:[],
+    teacherBodyIf:false,
+    studentBodyIf:false
   },
 
   /**
@@ -21,8 +23,14 @@ Page({
       console.log((app.globalData.studentOrTeacherId).toString());
       if (app.globalData.studentOrTeacherId.toString().length == 10) {
         this.getPersonalData();
+        this.setData({
+          studentBodyIf:true
+        })
       } else {
         this.getData();
+        this.setData({
+          teacherBodyIf:true
+        })
       }
     }
   },
@@ -121,7 +129,7 @@ Page({
     var that = this;
     console.log(app.globalData.studentOrTeacherId);
     wx.request({
-      url: 'https://selltom.mynatapp.cc/class/minSearchByTeacherId',
+      url: 'https://selltom.mynatapp.cc/teacherClassInfo/getInfoList',
       method: 'GET',
       // header: {
       //   "Content-Type": "application/x-www-form-urlencoded"
