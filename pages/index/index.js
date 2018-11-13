@@ -341,10 +341,10 @@ Page({
     if (detail){
       this.countDown();
     }
-    else{
+    else{//////
       this.closeCountDown();
     }
-    
+    //test
   }
 
 })
