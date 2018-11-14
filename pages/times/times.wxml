@@ -1,0 +1,30 @@
+<view class="container">
+
+  <view class="process">
+    <view class="process_bar"><van-progress inactive="{{nactive}}" color="#1989fa" text-color="#fff"
+     percentage="80" /></view>
+     <view class="process_text">离目标时间还剩XX：XX</view>
+     <view wx:if="{{state==true}}">计时中。。。</view>
+     <view wx:else="{{state==false}}">暂停中。。。</view>
+  </view>
+
+  <!--这是view负责显示图片，计时状态显示./ image / 1.jpg，暂停状态显示./ image / 2.jpg-->
+  <view class="ima" style="margin-top:100rpx;margin-bottom:50rpx">
+      <image mode="aspectFit" src="./image/1.jpg"></image>
+  </view>
+
+  <view>
+    <van-button round type="warning">结束</van-button>
+  </view>
+
+
+
+
+
+
+
+
+
+
+
+</view>

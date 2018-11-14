@@ -1,5 +1,11 @@
 <!--index.wxml-->
+<!--
+  这里是主页
+  开始后自动跳转计时页面，计时结束显示时间数据并后发送数据到后台，
+  用户按返回键可再次切换到主页
+-->
 <view class="container">
+
   <view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
@@ -7,13 +13,22 @@
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
   </view>
-  <!-- <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
-  </view> -->
+  <view class="choose_time" style="margin:60rpx">
+    <van-datetime-picker
+      type="time"
+      value="{{ currentDate }}"
+      min-hour="{{ minHour }}"
+      max-hour="{{ maxHour }}"
+      min-minute="{{min_minute}}"
+      max-minute="{{max_minute}}"
+      confirm-button-text="开始学习"
+      cancel-button-text="自定时间"
+      bind:confirm="confirmed"
+      bind:cancel="canceled"
+    /> 
+ </view>
 
-  <view class='view_sustainedTime'>
-    <text>总的专注时间: {{differtCountText}}\n</text>
-  </view>
+<!--
   <view class='clockBody'>
     <view style='align-item:center'>
       <text class='hour'>{{hour}}</text>时
@@ -23,11 +38,9 @@
     <view style='align-item:center'>
       <van-switch checked='{{checked}}' bind:change='onChange' />
     </view>
-  </view>
-  
+  </view> -->
 
-  <!-- <text class='is_focus'>专注时间</text>
-  <text class='not_focus'>走神时间</text> -->
+  <!-- 选注释着，搞好了再删
   <scroll-view class='scroll_view_t' scroll-y="true">
     <view class='is_focus_view' wx:for="{{focus_time}}" wx:key="{{key}}">
       <text class='is_focus_text'>本次专注时间{{item}}\n\n</text>
@@ -38,23 +51,45 @@
       <text>\n</text>
     </view>
   </scroll-view>
+  -->
+
+    <!-- 选择菜单按钮-->
+    <button class="choose_item" plain="true" bindtap="press_choose" style="margin:80rpx;border:none">
+     <van-icon name="add-o" size='80rpx'/> 
+    </button>
+  <!--这个是左侧呼出菜单项的内容-->
+  <van-popup overlay-style="opacity:0.35" show="{{ show }}"  position="left" bind:close="onClose" >
+    <view class="button_column">
+        <button class="button1" >使用说明</button>
+        <button class="button1" >创建房间</button>
+        <button class="button1" >创建房间</button>
+        <button class="button1" >创建房间</button>
+        <button class="button1" >创建房间</button>
+        <button class="button1" >创建房间</button>
+        <button class="button1" >创建房间</button>
+    </view>
+   
+  </van-popup>
+
+  <!-- 
+  这里把保存数据按钮取消，停止计时后自动发送数据到后台,
+  设计好后把这个注释删掉，现在留着是因为以防需要测试修改
   
+  <button bindtap='insert_focus'>增加专注记录</button>
 
-  <!-- <button bindtap='insert_focus'>增加专注记录</button>
-
-  <button bindtap='insert_unfocus'>增加走神记录</button> -->
+  <button bindtap='insert_unfocus'>增加走神记录</button> 
   <view class='view_button'>
     <view>
-      <!-- <button hidden='{{end_button_hidden}}' bindtap='closeCountDown'>关闭计时</button>
-      <button hidden='{{start_button_hidden}}' bindtap='countDown'>开始计时</button> -->
+     <button hidden='{{end_button_hidden}}' bindtap='closeCountDown'>关闭计时</button>
+      <button hidden='{{start_button_hidden}}' bindtap='countDown'>开始计时</button> 
       
     </view>
     <view>
       <button bindtap='sendTimeData'>保存数据</button>
     </view>
   </view>
-
-  <van-toast id='van-toast'/>
+-->
+  <van-toast id='van-toast'/>  
   
 </view>
 
