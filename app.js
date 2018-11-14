@@ -1,4 +1,30 @@
 //app.js
+/*
+在APP.json中的tabBar不让注释，把它先放这里吧，万一要测试了也好搬过去
+ "tabBar": {
+    "selectedColor": "#f00",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "Joker",
+        "iconPath": "pages/index/img/joker.png",
+        "selectedIconPath": "pages/index/img/joker.png"
+      },
+      {
+        "pagePath": "pages/tabOne/tabOne",
+        "text": "暂定",
+        "iconPath": "pages/index/img/software_box-36.png",
+        "selectedIconPath": "pages/index/img/cart.png"
+      },
+      {
+        "pagePath": "pages/tabTwo/tabTwo",
+        "text": "用户",
+        "iconPath": "pages/index/img/user.png",
+        "selectedIconPath": "pages/index/img/user.png"
+      }
+    ]
+  }
+*/
 App({
   onLaunch: function () {
     // 展示本地存储能力
@@ -39,6 +65,7 @@ App({
     studentOrTeacherId:'',
     studentTextBodyIf:false,
     launchInfo:{},
-    userRecord:[]
+    userRecord:[],
+    nactive:false//控制time.js页面中的进度条是否变灰色
   }
 })

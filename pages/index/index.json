@@ -3,6 +3,10 @@
   "usingComponents":{
     "van-toast": "/dist/toast/index",
     "van-transition":"/dist/transition/index",
-    "van-switch":"/dist/switch/index"
+    "van-switch":"/dist/switch/index",
+    "van-popup": "/dist/popup/index",
+    "van-button": "/dist/button/index",
+    "van-icon": "/dist/icon/index",
+    "van-datetime-picker": "/dist/datetime-picker/index"
   }
 }

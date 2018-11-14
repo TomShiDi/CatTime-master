@@ -1,4 +1,8 @@
 /**index.wxss**/
+.user{
+  display: flex;
+  flex-direction: row;
+}
 .userinfo {
   /* height: 200px; */
   display: flex;
@@ -124,6 +128,20 @@
 
 
 
+.button_column{
+  display:flex;
+  flex-direction: column;
+  background-color:rgba(76,76,76,0.5);
+}
+.button1{
+  margin: 30rpx;
+  background-color: #45c8af;
+  border-radius: 40rpx;
+}
+
+button::after{
+border: none;
+}
 
 /* .container{
   position: relative;

@@ -9,6 +9,11 @@ Page({
   data: {
     motto: 'Hello World',
     checked:false,
+    show:false,
+    minHour:0,
+    maxHour:0,
+    min_minute:0,
+    max_minute: 90,//以上参数都是框架中的控制参数
     start_button_hidden:false,
     end_button_hidden:true,
     processStartFlag:'0',
@@ -81,6 +86,8 @@ Page({
       })
     }
     let that = this;
+
+
     wx.onAccelerometerChange(function(res){
       var processStartFlag = that.data.processStartFlag;
       that.setData({
@@ -341,10 +348,30 @@ Page({
     if (detail){
       this.countDown();
     }
-    else{//////
+    else{
       this.closeCountDown();
     }
-    //test
+  
+  },
+  onClose() {
+    this.setData({ show: false });
+  },
+  press_choose:function(){
+    this.setData({
+      show:true
+    });
+  },
+  confirmed:function(){//按下开始学习,跳转time计时页面
+    app.globalData.nactive = false;
+    wx.navigateTo({
+      url: '../times/times'
+    })
+  },
+  canceled:function(){//按下自定时间，跳转time计时页面
+    app.globalData.nactive=true;
+    wx.navigateTo({
+      url: '../times/times'
+    })
   }
 
 })
