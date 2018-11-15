@@ -11,7 +11,10 @@
     "pages/tabTwo/tabTwo",
     "pages/testPage/testPage",
     "pages/studentRecordPage/studentRecordPage",
-    "pages/times/times"
+    "pages/times/times",
+    "pages/identity/identity",
+    "pages/creatroom/creatroom",
+    "pages/goroom/goroom"
   ],
   "window":{
     "backgroundTextStyle":"light",

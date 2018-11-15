@@ -1,0 +1,15 @@
+<view class="container">
+  <view class="text" style="margin-top:100rpx;width:%85">
+    <van-cell-group>
+      <van-field
+      value="{{ value }}"
+      placeholder="请输入房间号"
+      border="{{ false }}"
+      bind:change="onChange"
+      />
+     </van-cell-group>
+  </view>
+  <view style="margin-top:570rpx">
+    <van-button round type="default">进入</van-button>
+  </view>
+</view>

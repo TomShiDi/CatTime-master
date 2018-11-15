@@ -372,6 +372,28 @@ Page({
     wx.navigateTo({
       url: '../times/times'
     })
+  },
+  identity:function(){
+    wx.navigateTo({
+      url: '../identity/identity'
+    })
+  },
+  creat_room:function(){
+    //创建房间
+    wx.navigateTo({
+      url: '../creatroom/creatroom'
+    })
+  },
+  go_room:function(){
+    //依据签到码进入房间
+    wx.navigateTo({
+      url: '../goroom/goroom'
+    })
+  },
+  creat_sign:function(){
+    //发起签到
+    //生成签到码,将签到码，将签到码用“van-notify”显示到index页面
+    //若该用户上次的签到码未结束，则再次提示相同的签到码
   }
 
 })

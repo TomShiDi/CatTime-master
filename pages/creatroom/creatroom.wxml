@@ -1,0 +1,14 @@
+<view class="container">
+  <view class="msg_text">
+    <van-notice-bar
+      scrollable="false"
+      text="{{msg}}"
+      background="#336699"
+     
+    />
+  </view>
+  <view class="button_view">
+    <van-button round type="primary">签到房间</van-button>
+    <van-button round type="primary" style="margin-top:40rpx">学习房间</van-button>
+  </view> 
+</view>
