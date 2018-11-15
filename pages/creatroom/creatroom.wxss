@@ -1,0 +1,9 @@
+.msg_text{
+  margin-top:100rpx;
+  width: 80%;
+}
+.button_view{
+  margin-top:500rpx;
+  display: flex;
+  flex-direction: column;
+}

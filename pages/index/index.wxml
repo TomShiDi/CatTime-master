@@ -61,12 +61,11 @@
   <van-popup overlay-style="opacity:0.35" show="{{ show }}"  position="left" bind:close="onClose" >
     <view class="button_column">
         <button class="button1" >使用说明</button>
-        <button class="button1" >创建房间</button>
-        <button class="button1" >创建房间</button>
-        <button class="button1" >创建房间</button>
-        <button class="button1" >创建房间</button>
-        <button class="button1" >创建房间</button>
-        <button class="button1" >创建房间</button>
+        <button class="button1" bindtap="identity">身份绑定</button>
+        <button class="button1" bindtap="creat_room">创建房间</button>
+        <button class="button1" bindtap="go_room" >进入房间</button>
+        <button class="button1" bindtap="creat_sign">发起签到</button>
+        <button class="button1" >我的记录</button>
     </view>
    
   </van-popup>
