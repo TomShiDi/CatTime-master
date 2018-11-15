@@ -25,6 +25,7 @@
       cancel-button-text="自定时间"
       bind:confirm="confirmed"
       bind:cancel="canceled"
+      bind:change="pickerChanged"
     /> 
  </view>
 

@@ -2,8 +2,8 @@
 
   <view class="process">
     <view class="process_bar"><van-progress inactive="{{nactive}}" color="#1989fa" text-color="#fff"
-     percentage="80" /></view>
-     <view class="process_text">离目标时间还剩XX：XX</view>
+     percentage="{{percentage}}" /></view>
+     <view class="process_text">{{personal_rest_count}}</view>
      <view wx:if="{{state==true}}">计时中。。。</view>
      <view wx:else="{{state==false}}">暂停中。。。</view>
   </view>
@@ -14,7 +14,7 @@
   </view>
 
   <view>
-    <van-button round type="warning">结束</van-button>
+    <van-button round type="warning" bind:click="closeCountDown">结束</van-button>
   </view>
 
 

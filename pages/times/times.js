@@ -5,6 +5,8 @@ import Dialog from '../../dist/dialog/dialog';
 //获取应用实例
 const app = getApp();
 
+var timer;
+
 Page({
 
   /**
@@ -13,6 +15,8 @@ Page({
   data: {
     nactive:app.globalData.nactive,//引用app.js中的nactive，控制进度条
     state:false,
+    percentage:0,
+    personal_rest_count: ''  //离目标时间还剩余XX：XX
   },
 
   /**
@@ -26,7 +30,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    this.countDown();
   },
 
   /**
@@ -69,5 +73,22 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+
+  countDown:function(){
+    var that = this;
+    timer = setTimeout(function () {
+      console.log("go times");
+      that.setData({
+        percentage: Math.floor(app.globalData.differtCount*100 / app.globalData.personal_count),
+        personal_rest_count: app.globalData.personal_rest_count
+      });
+      that.countDown();
+    }, 1000);
+  },
+
+  closeCountDown:function(){
+    app.globalData.processStartFlag = 0;
   }
 })

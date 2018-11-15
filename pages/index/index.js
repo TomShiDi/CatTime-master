@@ -10,6 +10,7 @@ Page({
     motto: 'Hello World',
     checked:false,
     show:false,
+    personal_count:0,
     minHour:0,
     maxHour:0,
     min_minute:0,
@@ -89,7 +90,9 @@ Page({
 
 
     wx.onAccelerometerChange(function(res){
-      var processStartFlag = that.data.processStartFlag;
+      // var processStartFlag = that.data.processStartFlag;
+      var processStartFlag = app.globalData.processStartFlag;
+      console.log(processStartFlag);
       that.setData({
         position_x:res.x,
         position_y:res.y,
@@ -138,7 +141,7 @@ Page({
               second: Math.floor((endTime - startTime) % 60),
               minute: Math.floor((endTime - startTime) / 60)
             })
-  
+            app.globalData.differtCount = that.data.differtCount;
             console.log(focus_time);
           }
           startTime =0;
@@ -177,6 +180,10 @@ Page({
     that.setData({
       timer:setInterval(function(){
         count++;
+        var differt = app.globalData.personal_count - app.globalData.differtCount;
+        if(differt!=0){
+          app.globalData.personal_rest_count = Math.floor(differt/60)+":"+Math.floor(differt%60);
+        }
 
         that.setData({
           count:count
@@ -187,7 +194,8 @@ Page({
       start_button_hidden:true,
       end_button_hidden:false,
       processStartFlag:1
-    })
+    });
+    app.globalData.processStartFlag = 1;
   },
 
   closeCountDown:function(){
@@ -200,6 +208,7 @@ Page({
       differtCount:0,
       differttCountText:'0'
     });
+    app.globalData.processStartFlag = 0;
     // that.sendTimeData();
     clearInterval(that.data.timer);
   },
@@ -361,18 +370,32 @@ Page({
       show:true
     });
   },
-  confirmed:function(){//按下开始学习,跳转time计时页面
+
+
+  confirmed:function(v){//按下开始学习,跳转time计时页面
     app.globalData.nactive = false;
+    // console.log(parseInt(v.detail.substring(3,5)));
+    app.globalData.personal_count = parseInt(v.detail.substring(3, 5)) * 60;
+    this.countDown();
     wx.navigateTo({
-      url: '../times/times'
+      url: '../times/times',
+      personal_count: parseInt(v.detail.substring(3, 5))*60
     })
   },
+
+
   canceled:function(){//按下自定时间，跳转time计时页面
     app.globalData.nactive=true;
     wx.navigateTo({
       url: '../times/times'
     })
   },
+
+  pickerChanged(event){
+    // console.log(event.detail.data.pickerValue[1]);
+    // getColumnValue(0);
+  },
+
   identity:function(){
     wx.navigateTo({
       url: '../identity/identity'
