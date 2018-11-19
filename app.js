@@ -71,6 +71,7 @@ App({
     nactive:false,//控制time.js页面中的进度条是否变灰色
     personal_count:0,//自定义倒计时总秒数
     personal_rest_count:'',//离目标时间还剩余XX：XX
-    differtCount:0 //专注时间总秒数
+    differtCount:0, //专注时间总秒数
+    status:'2',//0表示离线，1表示在线，2表示暂停
   }
 })

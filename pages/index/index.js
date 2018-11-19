@@ -3,11 +3,15 @@ import Toast from '../../dist/toast/toast';
 import Dialog from '../../dist/dialog/dialog';
 
 //获取应用实例
-const app = getApp()
+const app = getApp();
+var timer;
+
+var socketOpen = false;
 
 Page({
   data: {
     motto: 'Hello World',
+    socketSendFlag:false,
     checked:false,
     show:false,
     personal_count:0,
@@ -58,6 +62,14 @@ Page({
     var maxWaitTime = 20;
 
     this.getUserOpenid();
+    this.onHttpsOpen();//连接建立函数
+    // this.socketCallback();
+    // timer = setTimeout(function(){
+
+    //   if(that.data.socketSendFlag){
+    //     that.sendSocketMsg();
+    //   }
+    // },10000);
 
     if (app.globalData.userInfo) {
       
@@ -86,13 +98,14 @@ Page({
         }
       })
     }
+
     let that = this;
 
 
     wx.onAccelerometerChange(function(res){
       // var processStartFlag = that.data.processStartFlag;
       var processStartFlag = app.globalData.processStartFlag;
-      console.log(processStartFlag);
+      // console.log(processStartFlag);
       that.setData({
         position_x:res.x,
         position_y:res.y,
@@ -111,6 +124,7 @@ Page({
       if (res.z>=0.8&&flag == 1&&processStartFlag==1){
         startTime = that.data.count;
         wx.vibrateLong();
+        app.globalData.status='1';//1表示在线
         if(that.data.countDownFlag == 1)
         {
           var unfocus_time = that.data.unfocus_time;
@@ -144,6 +158,7 @@ Page({
             app.globalData.differtCount = that.data.differtCount;
             console.log(focus_time);
           }
+          app.globalData.status = '2';//2表示暂停
           startTime =0;
           that.setData({
             countDownFlag:'1',
@@ -177,8 +192,14 @@ Page({
     var count = that.data.count;
 
     
+
     that.setData({
       timer:setInterval(function(){
+        var count = that.data.count;
+        // console.log(count);
+        if (count % 10 == 0) {
+          that.sendHttpsMessage();
+        }
         count++;
         var differt = app.globalData.personal_count - app.globalData.differtCount;
         if(differt!=0){
@@ -417,6 +438,114 @@ Page({
     //发起签到
     //生成签到码,将签到码，将签到码用“van-notify”显示到index页面
     //若该用户上次的签到码未结束，则再次提示相同的签到码
+  },
+
+//Socket方式回调函数,安全，编译器可以运行,手机端出错,原因未知
+  socketCallback:function(){
+    var that=this;
+    wx.connectSocket({
+      url: 'wss://selltom.mynatapp.cc/websocket',
+      // header:{
+      //   'content-type': 'application/json'
+      // },
+      // protocols: ['protocol1'],
+      method: "GET"
+    });
+
+
+    
+    wx.onSocketOpen(function(res){
+      socketOpen = true;
+      console.log("socket连接成功,");
+    });
+
+    wx.onSocketMessage(function(res){
+      console.log(res.data);
+    });
+
+    wx.onSocketError(function(res){
+      console.log("socket出错",res);
+    });
+
+    wx.onSocketClose(function(){
+      console.log("socket关闭");
+    });
+
+  },
+
+//Socket方式发送消息,安全，编译器可以运行,手机端出错,原因未知
+  sendSocketMsg:function(){
+    var that = this;
+    if(socketOpen){
+      // that.setData({
+      //   socketSendFlag: false
+      // });
+      wx.sendSocketMessage({
+        data: "{'studentId':'1605050113','launchRecordId':'1654661231154','status':'"+app.globalData.status+"'}",
+        success:function(res){
+          console.log("socket信息发送成功");
+          
+        }
+      })
+    }
+    // this.sendSocketMsg();
+  },
+
+//HTTPS连接打开调用函数,不安全
+  onHttpsOpen:function(){
+    var that = this;
+    wx.request({
+      url: 'https://selltom.mynatapp.cc/launch/onOpen',
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      method: 'GET',
+      complete:function(res){
+        if(res.statusCode==200){
+          console.log(res.data);
+        }
+      }
+    });
+  },
+
+//HTTPS连接关闭调用函数,不安全
+  onHttpsClose: function () {
+    var that = this;
+    wx.request({
+      url: 'https://selltom.mynatapp.cc/launch/onClose',
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      method: 'GET',
+      complete: function (res) {
+        if (res.statusCode == 200) {
+          console.log(res.data);
+        }
+      }
+    });
+  },
+
+//发送HTTPS消息函数,不安全
+  sendHttpsMessage:function(){
+    var that = this;
+    wx.request({
+      url: 'https://selltom.mynatapp.cc/launch/report',
+      header:{
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      method:'GET',
+      data:{
+        'studentId':'1605050113',
+        'launchRecordId':'4532132135454',
+        'status':app.globalData.status+""
+      },
+
+      complete:function(res){
+        if(res.statusCode!=200){
+          console.log("连接疑似中断");
+        }
+      }
+    })
   }
 
 })
